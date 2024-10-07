@@ -9,7 +9,7 @@ This project implements an authentication and authorization system using **FastA
 - **OAuth 2.0** (Google, Facebook login)
 - **JWT** (JSON Web Tokens)
 - **Redis** (Rate limiting)
-- **PostgreSQL** (or SQLite for local development)
+- **SQLite**
 
 ---
 
