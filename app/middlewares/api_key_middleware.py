@@ -6,10 +6,9 @@ from app.core.config import settings
 class APIKeyMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
         # Bypass API key check for specific paths
-        if request.url.path in ["/docs", "/openapi.json", "/redoc", "/users/login/email-password"]:
+        if request.url.path in ["/docs", "/openapi.json", "/redoc", "/users/login/email-password", "/users/login/google", "/users/login/facebook"]:
             return await call_next(request)
 
-        # Check if the X-API-KEY header is present and valid
         api_key = request.headers.get("X-API-KEY")
         if api_key != settings.API_KEY:
             return JSONResponse(
@@ -17,6 +16,5 @@ class APIKeyMiddleware(BaseHTTPMiddleware):
                 content={"message": "Invalid or missing API key"},
             )
 
-        # If the API key is valid, proceed to the next handler
         response = await call_next(request)
         return response

@@ -1,22 +1,18 @@
 # app/main.py
 
-from fastapi import FastAPI, Header, Depends
-from fastapi.openapi.models import APIKey
+from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from app.api.routes.users import router as user_router
-from app.api.routes.companies import router as company_router
 from app.db.database import engine
 from app.models.user import Base as UserBase
-from app.models.company import Base as CompanyBase
 from app.middlewares.api_key_middleware import APIKeyMiddleware
 from app.core.config import settings
+from starlette.middleware.sessions import SessionMiddleware
 
 from fastapi_limiter import FastAPILimiter
 import aioredis
 
-# Create the tables in the database
 UserBase.metadata.create_all(bind=engine)
-CompanyBase.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -32,12 +28,14 @@ async def shutdown():
     await redis.wait_closed()
 # End Rate Limit
 
-# Add the API Key middleware
+# SessionMiddleware first
+app.add_middleware(SessionMiddleware, secret_key="your-secret-key")
+
+# API Key middleware
 app.add_middleware(APIKeyMiddleware)
 
-# Include API routes
+
 app.include_router(user_router, prefix="/users")
-app.include_router(company_router, prefix="/companies")
 
 # Custom OpenAPI schema to include X-API-KEY header globally
 def custom_openapi():
@@ -57,7 +55,7 @@ def custom_openapi():
                     "name": "X-API-KEY",
                     "in": "header",
                     "required": True,
-                    "schema": {"type": "string", "default": settings.API_KEY},  # Set default value for swagger
+                    "schema": {"type": "string", "default": settings.API_KEY},
                     "description": "API key required for authorization",
                 }
             ] + method.get("parameters", [])

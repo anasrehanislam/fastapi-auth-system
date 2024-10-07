@@ -7,7 +7,6 @@ from jose import JWTError, jwt
 from app.core.config import settings
 from passlib.context import CryptContext
 
-# Define the password hashing context
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def create_access_token(data: dict, expires_delta: timedelta = None):
@@ -30,28 +29,13 @@ def verify_access_token(token: str = Depends(oauth2_scheme)):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-# def verify_access_token(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-#     credentials_exception = HTTPException(
-#         status_code=status.HTTP_401_UNAUTHORIZED,
-#         detail="Could not validate credentials",
-#         headers={"WWW-Authenticate": "Bearer"},
-#     )
-    
-#     try:
-#         # Decode the token
-#         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
-#         email: str = payload.get("sub")
-#         if email is None:
-#             raise credentials_exception
-#     except (JWTError, ValidationError):
-#         raise credentials_exception
-
-#     # Get the user from the database
-#     user = db.query(User).filter(User.email == email).first()
-#     if user is None:
-#         raise credentials_exception
-
-#     return user
+def role_based_access(required_role: str):
+    def role_checker(token: str = Depends(verify_access_token)):
+        user_role = token.get("role")
+        if user_role != required_role:
+            raise HTTPException(status_code=403, detail="Insufficient permissions")
+        return token
+    return role_checker
 
 def hash_password(password: str):
     return pwd_context.hash(password)
