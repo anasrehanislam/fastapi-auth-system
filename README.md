@@ -58,7 +58,10 @@ Replace placeholders (`your_google_client_id`, etc.) with the actual values.
 
 ### 4. Run Database Migrations
 
+alembic init alembic
+
 alembic revision --autogenerate -m "Recreate users table"
+
 alembic upgrade head
 
 
