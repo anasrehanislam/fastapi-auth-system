@@ -111,8 +111,6 @@ You can view and interact with all available routes at: http://localhost:8000/do
 - **Method**: `POST`
 - **Endpoint**: `/users/login/email-password`
 - **Description**: Log in using an email and password.
-- **Headers**: 
-    - `X-API-KEY: your-api-key`
 - **Payload** (Form Data):
     json
     {
@@ -132,7 +130,7 @@ You can view and interact with all available routes at: http://localhost:8000/do
 ### 4. **Admin Dashboard (Role-Based Access)**
 
 - **Method**: `GET`
-- **Endpoint**: `/admin-dashboard`
+- **Endpoint**: `/users/admin-dashboard`
 - **Description**: Access restricted to users with the "admin" role.
 - **Headers**: 
     - `X-API-KEY: your-api-key`
@@ -140,39 +138,31 @@ You can view and interact with all available routes at: http://localhost:8000/do
 ### 5. **Google Login**
 
 - **Method**: `GET`
-- **Endpoint**: `/login/google`
+- **Endpoint**: `/users/login/google`
 - **Description**: Initiate Google OAuth login flow.
-- **Headers**: 
-    - `X-API-KEY: your-api-key`
 
 ### 6. **Google Callback**
 
 - **Method**: `GET`
-- **Endpoint**: `/google/callback`
+- **Endpoint**: `/users/google/callback`
 - **Description**: Google OAuth callback URL for handling Google login.
-- **Headers**: 
-    - `X-API-KEY: your-api-key`
 
 ### 7. **Facebook Login**
 
 - **Method**: `GET`
-- **Endpoint**: `/login/facebook`
+- **Endpoint**: `/users/login/facebook`
 - **Description**: Initiate Facebook OAuth login flow.
-- **Headers**: 
-    - `X-API-KEY: your-api-key`
 
 ### 8. **Facebook Callback**
 
 - **Method**: `GET`
-- **Endpoint**: `/facebook/callback`
+- **Endpoint**: `/users/facebook/callback`
 - **Description**: Facebook OAuth callback URL for handling Facebook login.
-- **Headers**: 
-    - `X-API-KEY: your-api-key`
 
 ### 9. **Token Refresh**
 
 - **Method**: `POST`
-- **Endpoint**: `/token/refresh`
+- **Endpoint**: `/users/token/refresh`
 - **Description**: Refresh access token using a valid refresh token.
 - **Headers**: 
     - `X-API-KEY: your-api-key`
