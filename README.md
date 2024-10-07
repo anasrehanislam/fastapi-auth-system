@@ -29,6 +29,13 @@ python3.10 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
+### 2. Install the required dependencies
+
+The entire environment can be setup installing all the dependencies with the following command:
+
+
+pip install -r requirements.txt
+
 
 ### 3. Configure Environment Variables
 
