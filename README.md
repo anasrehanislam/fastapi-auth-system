@@ -43,17 +43,22 @@ Create a `.env` file in the root directory and populate it with the following en
 
 # .env
 SECRET_KEY=9a2e0b1d73f94bf5a73bbcf6d88d1f87e72a0b1d51c08f89b4c82fd964d93d51
+
 API_KEY=b8947b1e7f1a4f78a0d5d12b9b1e8d73a4e9fd1c7e92a3b4c6f28bf972c7e91a
 
 DATABASE_URL=sqlite+aiosqlite:///./test.db
 
 
 GOOGLE_CLIENT_ID=your_google_client_id
+
 GOOGLE_CLIENT_SECRET=your_google_client_secret
+
 GOOGLE_REDIRECT_URI=http://localhost:8000/api/v1/users/google/callback
 
 FACEBOOK_CLIENT_ID=your_google_client_id
+
 FACEBOOK_CLIENT_SECRET=your_google_client_secret
+
 FACEBOOK_REDIRECT_URI=http://localhost:8000/api/v1/users/facebook/callback
 
 
@@ -190,9 +195,11 @@ To enable Google and Facebook login, the client needs to create OAuth credential
 - Create new **OAuth 2.0 credentials**.
 - Set the **redirect URI** to `http://localhost:8000/google/callback`.
 - Add the following keys to the `.env` file:
-    env
+    
     GOOGLE_CLIENT_ID=your-google-client-id
+    
     GOOGLE_CLIENT_SECRET=your-google-client-secret
+    
     GOOGLE_REDIRECT_URI=http://localhost:8000/google/callback
     
 
@@ -202,9 +209,11 @@ To enable Google and Facebook login, the client needs to create OAuth credential
 - Create a new app and get the **App ID** and **App Secret**.
 - Set the **redirect URI** to `http://localhost:8000/facebook/callback`.
 - Add the following keys to the `.env` file:
-    env
+    
     FACEBOOK_CLIENT_ID=your-facebook-client-id
+    
     FACEBOOK_CLIENT_SECRET=your-facebook-client-secret
+    
     FACEBOOK_REDIRECT_URI=http://localhost:8000/facebook/callback
     
 
