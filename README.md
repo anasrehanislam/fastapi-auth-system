@@ -18,7 +18,7 @@ This project implements an authentication and authorization system using **FastA
 ### 1. Clone the Repository
 
 
-git clone https://github.com/your-repo/fastapi-auth-system.git
+git clone https://github.com/anasrehanislam/fastapi-auth-system
 cd fastapi-auth-system
 
 
@@ -34,30 +34,27 @@ pip install -r requirements.txt
 
 Create a `.env` file in the root directory and populate it with the following environment variables:
 
-env
-# JWT Secret
-SECRET_KEY=your-jwt-secret-key
+# .env
+SECRET_KEY=9a2e0b1d73f94bf5a73bbcf6d88d1f87e72a0b1d51c08f89b4c82fd964d93d51
+API_KEY=b8947b1e7f1a4f78a0d5d12b9b1e8d73a4e9fd1c7e92a3b4c6f28bf972c7e91a
 
-# API Key
-API_KEY=your-api-key
+DATABASE_URL=sqlite+aiosqlite:///./test.db
 
-# Database
-DATABASE_URL=postgresql://user:password@localhost/dbname
 
-# OAuth Credentials
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URI=http://localhost:8000/google/callback
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/api/v1/users/google/callback
 
-FACEBOOK_CLIENT_ID=your-facebook-client-id
-FACEBOOK_CLIENT_SECRET=your-facebook-client-secret
-FACEBOOK_REDIRECT_URI=http://localhost:8000/facebook/callback
+FACEBOOK_CLIENT_ID=your_google_client_id
+FACEBOOK_CLIENT_SECRET=your_google_client_secret
+FACEBOOK_REDIRECT_URI=http://localhost:8000/api/v1/users/facebook/callback
+
 
 # Rate Limiting
 REDIS_URL=redis://localhost:6379
 
 
-Replace placeholders (`your-jwt-secret-key`, `your-api-key`, etc.) with the actual values.
+Replace placeholders (`your_google_client_id`, etc.) with the actual values.
 
 ### 4. Run Database Migrations
 
