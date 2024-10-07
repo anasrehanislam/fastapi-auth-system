@@ -77,6 +77,8 @@ uvicorn app.main:app --reload
 
 > **Important**: All endpoints require the `X-API-KEY` header with the correct API key, which is set in the `.env` file.
 
+You can view and interact with all available routes at: http://localhost:8000/docs.
+
 ### 1. **User Registration (Email & Password)**
 
 - **Method**: `POST`
