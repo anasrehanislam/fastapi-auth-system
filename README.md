@@ -1,6 +1,6 @@
 # FastAPI Authentication & Authorization System
 
-This project implements an authentication and authorization system using **FastAPI** with JWT-based authentication, OAuth integration (Google & Facebook), and role-based access control. The system also includes rate limiting to protect the API from excessive requests.
+This project implements an authentication and authorization system using **FastAPI** with JWT-based authentication, OAuth integration (Google & Facebook), and role-based access control. The system also includes rate limiting to protect the API from excessive requests and uses an `X-API-KEY` for API access control.
 
 ## Technologies Used
 
@@ -32,28 +32,32 @@ pip install -r requirements.txt
 
 ### 3. Configure Environment Variables
 
-Created a `.env` file in the root directory and populate it with the following environment variables:
+Create a `.env` file in the root directory and populate it with the following environment variables:
 
-SECRET_KEY=9a2e0b1d73f94bf5a73bbcf6d88d1f87e72a0b1d51c08f89b4c82fd964d93d51
-API_KEY=b8947b1e7f1a4f78a0d5d12b9b1e8d73a4e9fd1c7e92a3b4c6f28bf972c7e91a
+env
+# JWT Secret
+SECRET_KEY=your-jwt-secret-key
 
-DATABASE_URL=sqlite+aiosqlite:///./test.db
+# API Key
+API_KEY=your-api-key
 
+# Database
+DATABASE_URL=postgresql://user:password@localhost/dbname
 
-GOOGLE_CLIENT_ID=your_google_client_id
-GOOGLE_CLIENT_SECRET=your_google_client_secret
-GOOGLE_REDIRECT_URI=http://localhost:8000/api/v1/users/google/callback
+# OAuth Credentials
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/google/callback
 
-FACEBOOK_CLIENT_ID=your_google_client_id
-FACEBOOK_CLIENT_SECRET=your_google_client_secret
-FACEBOOK_REDIRECT_URI=http://localhost:8000/api/v1/users/facebook/callback
-
+FACEBOOK_CLIENT_ID=your-facebook-client-id
+FACEBOOK_CLIENT_SECRET=your-facebook-client-secret
+FACEBOOK_REDIRECT_URI=http://localhost:8000/facebook/callback
 
 # Rate Limiting
 REDIS_URL=redis://localhost:6379
 
 
-Replace placeholders (`your_google_client_id`, etc.) with the actual values.
+Replace placeholders (`your-jwt-secret-key`, `your-api-key`, etc.) with the actual values.
 
 ### 4. Run Database Migrations
 
@@ -71,11 +75,15 @@ uvicorn app.main:app --reload
 
 ## API Endpoints
 
+> **Important**: All endpoints require the `X-API-KEY` header with the correct API key, which is set in the `.env` file.
+
 ### 1. **User Registration (Email & Password)**
 
 - **Method**: `POST`
 - **Endpoint**: `/users/register/email-password`
 - **Description**: Register a new user using an email and password.
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 - **Payload**:
     json
     {
@@ -89,6 +97,8 @@ uvicorn app.main:app --reload
 - **Method**: `POST`
 - **Endpoint**: `/users/login/email-password`
 - **Description**: Log in using an email and password.
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 - **Payload** (Form Data):
     json
     {
@@ -102,42 +112,56 @@ uvicorn app.main:app --reload
 - **Method**: `GET`
 - **Endpoint**: `/users`
 - **Description**: Retrieve a list of all registered users. (Rate limited: 5 requests per minute)
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 
 ### 4. **Admin Dashboard (Role-Based Access)**
 
 - **Method**: `GET`
 - **Endpoint**: `/admin-dashboard`
 - **Description**: Access restricted to users with the "admin" role.
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 
 ### 5. **Google Login**
 
 - **Method**: `GET`
 - **Endpoint**: `/login/google`
 - **Description**: Initiate Google OAuth login flow.
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 
 ### 6. **Google Callback**
 
 - **Method**: `GET`
 - **Endpoint**: `/google/callback`
 - **Description**: Google OAuth callback URL for handling Google login.
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 
 ### 7. **Facebook Login**
 
 - **Method**: `GET`
 - **Endpoint**: `/login/facebook`
 - **Description**: Initiate Facebook OAuth login flow.
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 
 ### 8. **Facebook Callback**
 
 - **Method**: `GET`
 - **Endpoint**: `/facebook/callback`
 - **Description**: Facebook OAuth callback URL for handling Facebook login.
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 
 ### 9. **Token Refresh**
 
 - **Method**: `POST`
 - **Endpoint**: `/token/refresh`
 - **Description**: Refresh access token using a valid refresh token.
+- **Headers**: 
+    - `X-API-KEY: your-api-key`
 - **Payload**:
     json
     {
@@ -166,7 +190,7 @@ To enable Google and Facebook login, the client needs to create OAuth credential
 ### 2. **Facebook Client Keys**
 
 - Go to [Facebook for Developers](https://developers.facebook.com/).
-- Create a new app and get **OAuth credentials**.
+- Create a new app and get the **App ID** and **App Secret**.
 - Set the **redirect URI** to `http://localhost:8000/facebook/callback`.
 - Add the following keys to the `.env` file:
     env
@@ -177,19 +201,22 @@ To enable Google and Facebook login, the client needs to create OAuth credential
 
 ---
 
-## Rate Limiting
-
-To prevent abuse, rate limiting is implemented using Redis. Make sure Redis is running on your local machine or server. You can adjust the rate limits in the route dependencies, e.g., `RateLimiter(times=10, seconds=60)` means 10 requests per minute.
-
----
-
 ## Testing
 
-To run the tests, use the following command:
+Run tests using `pytest`:
+
+
 pytest
 
 
-Ensure the Redis server is running to avoid errors related to rate limiting during tests.
+The tests cover basic registration.
 
+---
 
+## Security Features
+
+- **JWT Authentication**: Provides secure token-based authentication with short-lived access tokens and long-lived refresh tokens.
+- **OAuth 2.0**: Supports Google and Facebook login via OAuth.
+- **X-API-KEY**: All API routes are secured with an API key that needs to be passed in the request headers.
+- **Rate Limiting**: Redis-based rate limiting is applied to protect the API from abuse.
 
